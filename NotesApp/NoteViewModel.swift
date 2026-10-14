@@ -9,8 +9,9 @@ import Foundation
 import Observation
 
 @Observable
-class NoteViewModel {
-    var noteRepo: NoteRepo
+final class NoteViewModel {
+    private let noteRepo: NoteRepo
+    
     var notes: [Note] {
         didSet { noteRepo.saveNotes(notes)}
     }

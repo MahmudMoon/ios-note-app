@@ -9,7 +9,7 @@ import Foundation
 
 final class InMemoryNoteRepoImp: NoteRepo {
     
-    var notes: [Note]
+    private var notes: [Note]
     
     init(notes: [Note] = []) {
         self.notes = notes

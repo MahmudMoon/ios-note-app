@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct NotesAppApp: App {
     @State private var isLoggedIn: Bool = false
-    @State var noteViewModel = NoteViewModel(
+    @State private var noteViewModel = NoteViewModel(
         noteRepo: InMemoryNoteRepoImp()
     )
     var body: some Scene {
