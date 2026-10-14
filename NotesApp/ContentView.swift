@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Foundation
 
 struct ContentView: View {
     @State private var noteViewModel: NoteViewModel = NoteViewModel()
@@ -28,8 +27,8 @@ struct ContentView: View {
             ButtonSection(noteViewModel: noteViewModel)
 
             // Notes list
-            List(noteViewModel.notes, id: \.self) { note in
-                Text(note)
+            List(noteViewModel.notes) { note in
+                Text(note.content)
             }
             .listStyle(.plain)
         }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NoteButtonStyle: ButtonStyle{
     var isFilled = false
-    @Environment(\.isEnabled) var isEnabled
+    @Environment(\.isEnabled) private var isEnabled
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -23,6 +23,6 @@ struct NoteButtonStyle: ButtonStyle{
                 } else {
                     RoundedRectangle(cornerRadius: 16).strokeBorder(.cyan, lineWidth: 2)
                 }
-            }.opacity(isEnabled ? (configuration.isPressed ? 0.4 : 1) : 0.3)
+            }.opacity(isEnabled ? (configuration.isPressed ? 0.75 : 1) : 0.3)
     }
 }

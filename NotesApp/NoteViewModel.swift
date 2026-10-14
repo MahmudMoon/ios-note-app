@@ -10,7 +10,7 @@ import Observation
 
 @Observable
 class NoteViewModel {
-    var notes: [String] = []
+    var notes: [Note] = []
     var draft: String = ""
 
     var isDraftBlank: Bool {
@@ -23,9 +23,9 @@ class NoteViewModel {
 
     /// Adds the current draft to notes and clears it. Ignores blank drafts.
     func add() {
+        guard !isDraftBlank else { return }
         let trimmed = draft.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
-        notes.append(trimmed)
+        notes.append(Note(content: trimmed))
         draft = ""
     }
 

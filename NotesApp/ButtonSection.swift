@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Foundation
 
 struct ButtonSection: View {
     @Bindable var noteViewModel: NoteViewModel

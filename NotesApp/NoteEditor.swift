@@ -13,11 +13,15 @@ struct NoteEditor: View {
     var body: some View {
         TextField("Enter New Note", text: $noteViewModel.draft, axis: .vertical)
             .padding(.all, 12)
-            .frame(maxWidth: 200, minHeight: 100, alignment: .topLeading)
+            .frame(maxWidth: .infinity, minHeight: 50, alignment: .topLeading)
             .overlay {
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(.cyan, lineWidth: 2)
             }
-            .padding(.all, 16)
+            .padding(.horizontal, 32)
     }
+}
+
+#Preview {
+    NoteEditor(noteViewModel: NoteViewModel())
 }
