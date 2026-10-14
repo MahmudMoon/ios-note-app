@@ -9,14 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var noteViewModel: NoteViewModel = NoteViewModel()
-
+    @State private var showSettings: Bool = false
+    @State private var showNote: Bool = false
+    @Binding var isLoggedIn: Bool
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 10) {
                 // Large note count
-                Text("\(noteViewModel.noteCount)")
-                    .font(.system(size: 72, weight: .bold, design: .rounded))
-                    .foregroundStyle(.cyan)
+                if showNote { Text("\(noteViewModel.noteCount)")
+                        .font(.system(size: 72, weight: .bold, design: .rounded))
+                        .foregroundStyle(.cyan)
+                }
+                
                 Text("notes")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
@@ -30,6 +35,18 @@ struct ContentView: View {
                 NoteListDisplay(noteViewModel: noteViewModel)
             }
             .navigationTitle(Text("Notes"))
+            .toolbar{
+                ToolbarItem(placement: .topBarTrailing){
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            }
+            .sheet(isPresented: $showSettings){
+                SettingScreen(isPresented: $showNote, isLoggedIn: $isLoggedIn)
+            }
             .padding(.all, 10)
         }
         
@@ -37,5 +54,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    @Previewable @State var show: Bool = true
+    ContentView(isLoggedIn: $show)
 }

@@ -12,7 +12,7 @@ struct NoteDetailScreen: View {
     
     var body: some View {
         TextField("Enter your note", text: $note.content , axis: .vertical)
-            .textFieldStyle(NoteTextFieldStyle())
+            .addTextFieldStyle()
             .navigationTitle("Edit note")
             .navigationBarTitleDisplayMode(.inline)
         

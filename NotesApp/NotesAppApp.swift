@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct NotesAppApp: App {
+    @State private var isLoggedIn: Bool = false
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if isLoggedIn {
+                ContentView(isLoggedIn: $isLoggedIn)
+            }else{
+                LoginScreen(isLoggedIn: $isLoggedIn)
+            }
         }
     }
 }

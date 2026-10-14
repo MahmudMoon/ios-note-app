@@ -12,7 +12,7 @@ struct NoteEditor: View {
 
     var body: some View {
         TextField("Enter New Note", text: $noteViewModel.draft, axis: .vertical)
-            .textFieldStyle(NoteTextFieldStyle())
+            .addTextFieldStyle()
     }
 }
 
