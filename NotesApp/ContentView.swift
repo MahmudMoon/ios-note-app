@@ -30,22 +30,6 @@ struct ContentView: View {
                 NoteListDisplay(noteViewModel: noteViewModel)
             }
             .navigationTitle(Text("Notes"))
-            .toolbar{
-                ToolbarItem(placement: .navigationBarLeading){
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "house")
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing){
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-            }
             .padding(.all, 10)
         }
         

@@ -21,10 +21,7 @@ struct NoteListDisplay: View {
                 }
                 
                 .onDelete{ offset in
-                    for index in offset.sorted(by: >) {
-                        noteViewModel.deletebasedonindex(index: index)
-                        print(index)
-                    }
+                    noteViewModel.delete(at: offset)
                 }
         }
     }
