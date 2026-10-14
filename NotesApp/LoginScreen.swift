@@ -15,8 +15,14 @@ struct LoginScreen: View {
         VStack(spacing: 20){
             TextField("Enter Email", text: $email)
                 .addTextFieldStyle()
+                .keyboardType(.emailAddress)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .textContentType(.emailAddress)
+            
             SecureField("userId", text: $password)
                 .addTextFieldStyle()
+                .textContentType(.password)
             Button {
                 isLoggedIn = true
             } label: {

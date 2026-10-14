@@ -12,6 +12,8 @@ import Observation
 class NoteViewModel {
     var notes: [Note] = []
     var draft: String = ""
+    
+    var showNoteCount: Bool = true
 
     var isDraftBlank: Bool {
         draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty

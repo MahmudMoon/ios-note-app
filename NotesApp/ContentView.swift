@@ -10,21 +10,19 @@ import SwiftUI
 struct ContentView: View {
     @State private var noteViewModel: NoteViewModel = NoteViewModel()
     @State private var showSettings: Bool = false
-    @State private var showNote: Bool = false
     @Binding var isLoggedIn: Bool
     
     var body: some View {
         NavigationStack {
             VStack(spacing: 10) {
                 // Large note count
-                if showNote { Text("\(noteViewModel.noteCount)")
+                if noteViewModel.showNoteCount { Text("\(noteViewModel.noteCount)")
                         .font(.system(size: 72, weight: .bold, design: .rounded))
                         .foregroundStyle(.cyan)
+                    Text("notes")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                 }
-                
-                Text("notes")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
                 
                 // TextField bound to draft via @Bindable in child
                 NoteEditor(noteViewModel: noteViewModel)
@@ -45,7 +43,7 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showSettings){
-                SettingScreen(isPresented: $showNote, isLoggedIn: $isLoggedIn)
+                SettingScreen(showNoteCount: $noteViewModel.showNoteCount, isLoggedIn: $isLoggedIn)
             }
             .padding(.all, 10)
         }
@@ -54,6 +52,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    @Previewable @State var show: Bool = true
-    ContentView(isLoggedIn: $show)
+    @Previewable @State var isLoggedIn: Bool = true
+    ContentView(isLoggedIn: $isLoggedIn)
 }
