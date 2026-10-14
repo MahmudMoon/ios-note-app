@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NoteEditor: View {
-    @Binding var noteViewModel: NoteViewModel
+    @Bindable var noteViewModel: NoteViewModel
 
     var body: some View {
         TextField("Enter New Note", text: $noteViewModel.draft, axis: .vertical)
@@ -17,5 +17,5 @@ struct NoteEditor: View {
 }
 
 #Preview {
-   // NoteEditor(noteViewModel: NoteViewModel())
+    NoteEditor(noteViewModel: NoteViewModel())
 }

@@ -22,12 +22,12 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
                 
                 // TextField bound to draft via @Bindable in child
-                NoteEditor(noteViewModel: $noteViewModel)
+                NoteEditor(noteViewModel: noteViewModel)
                 
                 // Add / Reset buttons
                 ButtonSection(noteViewModel: noteViewModel)
                 
-                NoteListDisplay(noteViewModel: $noteViewModel)
+                NoteListDisplay(noteViewModel: noteViewModel)
             }
             .navigationTitle(Text("Notes"))
             .toolbar{

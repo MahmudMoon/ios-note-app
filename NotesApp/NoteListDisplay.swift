@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NoteListDisplay: View {
-   @Binding var noteViewModel: NoteViewModel
+   @Bindable var noteViewModel: NoteViewModel
     
     var body: some View {
             List{
@@ -21,7 +21,7 @@ struct NoteListDisplay: View {
                 }
                 
                 .onDelete{ offset in
-                    for index in offset {
+                    for index in offset.sorted(by: >) {
                         noteViewModel.deletebasedonindex(index: index)
                         print(index)
                     }
@@ -31,5 +31,5 @@ struct NoteListDisplay: View {
 }
 
 #Preview {
-   // NoteListDisplay(noteViewModel: NoteViewModel())
+    NoteListDisplay(noteViewModel: NoteViewModel())
 }

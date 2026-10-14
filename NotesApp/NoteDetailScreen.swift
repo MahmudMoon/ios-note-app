@@ -11,7 +11,7 @@ struct NoteDetailScreen: View {
     @Binding var note: Note
     
     var body: some View {
-        TextField(note.content, text: $note.content , axis: .vertical)
+        TextField("Enter your note", text: $note.content , axis: .vertical)
             .textFieldStyle(NoteTextFieldStyle())
             .navigationTitle("Edit note")
             .navigationBarTitleDisplayMode(.inline)
@@ -20,5 +20,6 @@ struct NoteDetailScreen: View {
 }
 
 #Preview {
-   // NoteDetailScreen(noteViewModel: NoteViewModel())
+    @Previewable @State var note = Note(content: "Milk")
+    NoteDetailScreen(note: $note)
 }

@@ -34,17 +34,17 @@ class NoteViewModel {
         notes.removeAll()
     }
     
-    func getNote(uuid: UUID) -> Note? {
-        notes.filter{
-            $0.id == uuid
-        }.first
-    }
-    
-    func removeNote(uuid: UUID)-> Bool {
-        guard let _ = getNote(uuid: uuid) else {return false}
-        notes.removeAll(where: { $0.id == uuid })
-        return true
-    }
+//    func getNote(uuid: UUID) -> Note? {
+//        notes.filter{
+//            $0.id == uuid
+//        }.first
+//    }
+//    
+//    func removeNote(uuid: UUID)-> Bool {
+//        guard let _ = getNote(uuid: uuid) else {return false}
+//        notes.removeAll(where: { $0.id == uuid })
+//        return true
+//    }
     
     func deletebasedonindex(index: Int) {
         notes.remove(at: index)
