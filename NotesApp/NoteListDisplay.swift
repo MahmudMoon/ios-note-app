@@ -28,5 +28,5 @@ struct NoteListDisplay: View {
 }
 
 #Preview {
-    NoteListDisplay(noteViewModel: NoteViewModel())
+    NoteListDisplay(noteViewModel: NoteViewModel(noteRepo: InMemoryNoteRepoImp()))
 }

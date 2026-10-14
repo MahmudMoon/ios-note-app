@@ -9,18 +9,18 @@ import SwiftUI
 
 struct LoginScreen: View {
     @Binding var isLoggedIn: Bool
-    @State var password: String = ""
-    @State var email: String = ""
+    @State private var password: String = ""
+    @State private var email: String = ""
     var body: some View {
         VStack(spacing: 20){
-            TextField("Enter Email", text: $email)
+            TextField("Email", text: $email)
                 .addTextFieldStyle()
                 .keyboardType(.emailAddress)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .textContentType(.emailAddress)
             
-            SecureField("userId", text: $password)
+            SecureField("password", text: $password)
                 .addTextFieldStyle()
                 .textContentType(.password)
             Button {

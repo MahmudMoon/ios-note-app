@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var noteViewModel: NoteViewModel = NoteViewModel()
+    @Bindable var noteViewModel: NoteViewModel
     @State private var showSettings: Bool = false
     @Binding var isLoggedIn: Bool
     
@@ -53,5 +53,5 @@ struct ContentView: View {
 
 #Preview {
     @Previewable @State var isLoggedIn: Bool = true
-    ContentView(isLoggedIn: $isLoggedIn)
+    ContentView(noteViewModel: NoteViewModel(noteRepo: InMemoryNoteRepoImp()),isLoggedIn: $isLoggedIn)
 }

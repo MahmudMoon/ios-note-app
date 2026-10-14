@@ -10,7 +10,10 @@ import Observation
 
 @Observable
 class NoteViewModel {
-    var notes: [Note] = []
+    var noteRepo: NoteRepo
+    var notes: [Note] {
+        didSet { noteRepo.saveNotes(notes)}
+    }
     var draft: String = ""
     
     var showNoteCount: Bool = true
@@ -21,6 +24,11 @@ class NoteViewModel {
 
     var noteCount: Int {
         notes.count
+    }
+    
+    init(noteRepo: NoteRepo) {
+        self.noteRepo = noteRepo
+        self.notes = noteRepo.loadNotes()
     }
 
     /// Adds the current draft to notes and clears it. Ignores blank drafts.
