@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ButtonSection: View {
-    @Bindable var noteViewModel: NoteViewModel
+    let noteViewModel: NoteViewModel
 
     var body: some View {
         HStack(spacing: 12) {

@@ -8,20 +8,14 @@
 import SwiftUI
 
 struct NoteEditor: View {
-    @Bindable var noteViewModel: NoteViewModel
+    @Binding var noteViewModel: NoteViewModel
 
     var body: some View {
         TextField("Enter New Note", text: $noteViewModel.draft, axis: .vertical)
-            .padding(.all, 12)
-            .frame(maxWidth: .infinity, minHeight: 50, alignment: .topLeading)
-            .overlay {
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(.cyan, lineWidth: 2)
-            }
-            .padding(.horizontal, 32)
+            .textFieldStyle(NoteTextFieldStyle())
     }
 }
 
 #Preview {
-    NoteEditor(noteViewModel: NoteViewModel())
+   // NoteEditor(noteViewModel: NoteViewModel())
 }

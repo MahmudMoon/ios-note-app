@@ -9,5 +9,5 @@ import Foundation
 
 struct Note: Identifiable {
     let id = UUID()
-    let content: String
+    var content: String
 }
