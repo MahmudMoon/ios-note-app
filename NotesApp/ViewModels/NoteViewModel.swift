@@ -8,9 +8,22 @@
 import Foundation
 import Observation
 
+enum LoadState {
+    case idle
+    case loading
+    case loaded
+    case failed(String)
+    
+}
+
+
+@MainActor
 @Observable
 final class NoteViewModel {
     private let noteRepo: NoteRepo
+    private var noteAPi: NotesAPI
+    
+    var loadState: LoadState = .idle
     
     var notes: [Note] {
         didSet { noteRepo.saveNotes(notes)}
@@ -30,6 +43,7 @@ final class NoteViewModel {
     init(noteRepo: NoteRepo) {
         self.noteRepo = noteRepo
         self.notes = noteRepo.loadNotes()
+        self.noteAPi = NotesAPI()
     }
 
     /// Adds the current draft to notes and clears it. Ignores blank drafts.
@@ -48,6 +62,20 @@ final class NoteViewModel {
     func delete(at offset: IndexSet) {
         for index in offset.sorted(by: >) {
             notes.remove(at: index)
+        }
+    }
+    
+    /// Loads todos as notes. Pull to refresh passes `showsLoading: false` so the
+    /// list's own refresh indicator isn't doubled up with the progress view.
+    func refresh(showsLoading: Bool = true) async {
+        loadState = showsLoading ? .loading : .idle
+        do{
+           let todos =  try await noteAPi.fetchTodos()
+            notes = todos.map { $0.toNote() }
+            loadState = .loaded
+        }catch {
+            loadState = .failed(error.localizedDescription)
+            print(error)
         }
     }
 }

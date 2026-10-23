@@ -24,6 +24,9 @@ struct NoteListDisplay: View {
                     noteViewModel.delete(at: offset)
                 }
         }
+        .refreshable {
+            await noteViewModel.refresh(showsLoading: false)
+        }
     }
 }
 

@@ -30,6 +30,18 @@ struct ContentView: View {
                 // Add / Reset buttons
                 ButtonSection(noteViewModel: noteViewModel)
                 
+                switch noteViewModel.loadState {
+                case .loading:
+                    ProgressView("Loading notes…")
+                        .tint(.cyan)
+                case .failed(let error):
+                    ErrorView(error: error) {
+                        Task { await noteViewModel.refresh() }
+                    }
+                case .idle, .loaded:
+                    EmptyView()
+                }
+                
                 NoteListDisplay(noteViewModel: noteViewModel)
             }
             .navigationTitle(Text("Notes"))
@@ -46,6 +58,9 @@ struct ContentView: View {
                 SettingScreen(showNoteCount: $noteViewModel.showNoteCount, isLoggedIn: $isLoggedIn)
             }
             .padding(.all, 10)
+            .task {
+               await noteViewModel.refresh()
+            }
         }
         
     }
@@ -54,6 +69,6 @@ struct ContentView: View {
 #Preview {
     @Previewable @State var isLoggedIn: Bool = true
     ContentView(noteViewModel: NoteViewModel(noteRepo: InMemoryNoteRepoImp(notes: [
-        Note(content: "Milk"), Note(content: "Call Rahim")
+        Note(content: "Milkl"), Note(content: "Call Rahim")
     ])),isLoggedIn: $isLoggedIn)
 }
