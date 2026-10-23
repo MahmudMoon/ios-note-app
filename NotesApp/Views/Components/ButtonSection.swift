@@ -32,5 +32,5 @@ struct ButtonSection: View {
 }
 
 #Preview {
-    ButtonSection(noteViewModel: NoteViewModel(noteRepo: InMemoryNoteRepoImp(), noteService: PreviewNoteService()))
+    ButtonSection(noteViewModel: NoteViewModel(noteRepoLocal: InMemoryNoteRepoImp(), noteReportRemote: NoteFetchRepoImpl(noteService: NotesAPI())))
 }

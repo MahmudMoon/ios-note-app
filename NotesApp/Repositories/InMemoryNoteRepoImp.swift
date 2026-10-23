@@ -16,11 +16,17 @@ final class InMemoryNoteRepoImp: NoteRepo {
     }
     
     
-    func loadNotes() -> [Note] {
+    func loadNotes() async throws -> [Note] {
         return notes
     }
     
-    func saveNotes(_ notes: [Note]) {
-        self.notes = notes
+    func saveNotes(_ note: Note) async throws {
+        print("saving note", notes)
+        self.notes.append(note)
+    }
+    
+    func updateNote(_ note: Note) async throws {
+        guard let index = notes.firstIndex(where: { $0.id == note.id }) else { return }
+        notes[index] = note
     }
 }

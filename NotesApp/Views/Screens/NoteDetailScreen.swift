@@ -8,19 +8,34 @@
 import SwiftUI
 
 struct NoteDetailScreen: View {
-    @Binding var note: Note
+    let note: Note
+    let onSave: (Note) -> Void
+    @State private var content: String
+    
+    init(note: Note, onSave: @escaping (Note) -> Void) {
+        self.note = note
+        self.onSave = onSave
+        _content = State(initialValue: note.content)
+    }
     
     var body: some View {
-        TextField("Enter your note", text: $note.content , axis: .vertical)
+        TextField("Enter your note", text: $content, axis: .vertical)
             .addTextFieldStyle()
             .frame(maxHeight: .infinity, alignment: .top)
             .navigationTitle("Edit note")
             .navigationBarTitleDisplayMode(.inline)
-        
+            .onDisappear {
+                let trimmed = content.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !trimmed.isEmpty, trimmed != note.content else { return }
+                var updated = note
+                updated.content = trimmed
+                onSave(updated)
+            }
     }
 }
 
 #Preview {
-    @Previewable @State var note = Note(content: "Milk")
-    NoteDetailScreen(note: $note)
+    NavigationStack {
+        NoteDetailScreen(note: Note(content: "Milk")) { _ in }
+    }
 }

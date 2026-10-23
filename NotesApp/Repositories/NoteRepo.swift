@@ -8,6 +8,7 @@
 import Foundation
 
 protocol NoteRepo {
-    func loadNotes() -> [Note]
-    func saveNotes(_ notes: [Note])
+    func loadNotes() async throws -> [Note]
+    func saveNotes(_ note: Note) async throws
+    func updateNote(_ note: Note) async throws
 }

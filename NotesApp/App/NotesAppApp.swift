@@ -11,15 +11,19 @@ import SwiftUI
 struct NotesAppApp: App {
     @State private var isLoggedIn: Bool = false
     @State private var noteViewModel = NoteViewModel(
-        noteRepo: InMemoryNoteRepoImp(),
-        noteService: NotesAPI()
+        noteRepoLocal: InMemoryNoteRepoImp(),
+        noteReportRemote: NoteFetchRepoImpl(noteService: NotesAPI())
+    )
+    
+    @State private var loginViewModel: LoginViewModel = LoginViewModel(
+      authRepo: AuthRepoImpl(authService: AuthApi())
     )
     var body: some Scene {
         WindowGroup {
-            if isLoggedIn {
+            if loginViewModel.isLoggedIn {
                 ContentView(noteViewModel: noteViewModel, isLoggedIn: $isLoggedIn)
             }else{
-                LoginScreen(isLoggedIn: $isLoggedIn)
+                LoginScreen(loginViewModel: loginViewModel)
             }
         }
     }

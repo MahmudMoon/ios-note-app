@@ -12,17 +12,26 @@ struct NoteListDisplay: View {
     
     var body: some View {
             List{
-                ForEach($noteViewModel.notes){ $note in
-                    NavigationLink{
-                        NoteDetailScreen(note: $note)
-                    } label: {
-                        Text(note.content)
-                    }
-                }
-                
-                .onDelete{ offset in
-                    noteViewModel.delete(at: offset)
-                }
+                ForEach(Array(noteViewModel.notes.enumerated()), id: \.element.id) { item in
+                      let number = item.offset + 1      // position starts at 0, so add 1
+                      let note = item.element
+
+                      NavigationLink {
+                          NoteDetailScreen(note: note) { updated in
+                              noteViewModel.update(updated)
+                          }
+                      } label: {
+                          HStack(alignment: .firstTextBaseline, spacing: 8) {
+                              Text("\(number).")
+                                  .foregroundStyle(.secondary)
+                                  .monospacedDigit()
+                              Text(note.content)
+                          }
+                      }
+                  }
+                  .onDelete { offsets in
+                      noteViewModel.delete(at: offsets)
+                  }
         }
         .refreshable {
             await noteViewModel.refresh(showsLoading: false)
@@ -31,5 +40,5 @@ struct NoteListDisplay: View {
 }
 
 #Preview {
-    NoteListDisplay(noteViewModel: NoteViewModel(noteRepo: InMemoryNoteRepoImp(), noteService: PreviewNoteService()))
+    NoteListDisplay(noteViewModel: NoteViewModel(noteRepoLocal: InMemoryNoteRepoImp(), noteReportRemote: NoteFetchRepoImpl(noteService: NotesAPI())))
 }

@@ -8,34 +8,40 @@
 import SwiftUI
 
 struct LoginScreen: View {
-    @Binding var isLoggedIn: Bool
     @State private var password: String = ""
-    @State private var email: String = ""
+    @State private var userName: String = ""
+    @Bindable var loginViewModel: LoginViewModel
+    
     var body: some View {
         VStack(spacing: 20){
-            TextField("Email", text: $email)
+            TextField("UserName", text: $userName)
                 .addTextFieldStyle()
-                .keyboardType(.emailAddress)
+                .keyboardType(.namePhonePad)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
-                .textContentType(.emailAddress)
+                .textContentType(.username)
             
             SecureField("password", text: $password)
                 .addTextFieldStyle()
                 .textContentType(.password)
             Button {
-                isLoggedIn = true
+                Task {
+                    print(userName)
+                    print(password)
+                    await loginViewModel.login(userName: userName, password: password)
+                }
             } label: {
                 Text("Login now")
             }
             .padding(16)
             .buttonStyle(NoteButtonStyle(isFilled: true))
-            .disabled(!email.contains("@") || password.count < 6)
+            .disabled(userName.count < 4 || password.count < 6)
         }
     }
 }
 
 #Preview {
     @Previewable @State var isLoggedIn: Bool = false
-    LoginScreen(isLoggedIn: $isLoggedIn)
+    
+    LoginScreen(loginViewModel: LoginViewModel(authRepo: AuthRepoImpl(authService: AuthApi())))
 }

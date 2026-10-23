@@ -59,16 +59,26 @@ struct ContentView: View {
             }
             .padding(.all, 10)
             .task {
-               await noteViewModel.refresh()
+               await noteViewModel.loadIfNeeded()
             }
         }
         
     }
 }
 
+
+#Preview("Offline") {
+    ContentView(
+        noteViewModel: NoteViewModel(
+            noteRepoLocal: InMemoryNoteRepoImp(), noteReportRemote: NoteFetchRepoImpl(noteService: NotesAPI())
+        ),
+        isLoggedIn: .constant(true)
+    )
+}
+
 #Preview {
     @Previewable @State var isLoggedIn: Bool = true
-    ContentView(noteViewModel: NoteViewModel(noteRepo: InMemoryNoteRepoImp(notes: [
+    ContentView(noteViewModel: NoteViewModel(noteRepoLocal: InMemoryNoteRepoImp(notes: [
         Note(content: "Milkl"), Note(content: "Call Rahim")
-    ]), noteService: PreviewNoteService()),isLoggedIn: $isLoggedIn)
+    ]), noteReportRemote: NoteFetchRepoImpl(noteService: NotesAPI())),isLoggedIn: $isLoggedIn)
 }
