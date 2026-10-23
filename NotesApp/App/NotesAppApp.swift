@@ -11,7 +11,8 @@ import SwiftUI
 struct NotesAppApp: App {
     @State private var isLoggedIn: Bool = false
     @State private var noteViewModel = NoteViewModel(
-        noteRepo: InMemoryNoteRepoImp()
+        noteRepo: InMemoryNoteRepoImp(),
+        noteService: NotesAPI()
     )
     var body: some Scene {
         WindowGroup {

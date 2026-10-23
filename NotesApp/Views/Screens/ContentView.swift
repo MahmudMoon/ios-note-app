@@ -70,5 +70,5 @@ struct ContentView: View {
     @Previewable @State var isLoggedIn: Bool = true
     ContentView(noteViewModel: NoteViewModel(noteRepo: InMemoryNoteRepoImp(notes: [
         Note(content: "Milkl"), Note(content: "Call Rahim")
-    ])),isLoggedIn: $isLoggedIn)
+    ]), noteService: PreviewNoteService()),isLoggedIn: $isLoggedIn)
 }

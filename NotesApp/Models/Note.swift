@@ -10,4 +10,5 @@ import Foundation
 struct Note: Identifiable {
     let id = UUID()
     var content: String
+    var remoteID: Int? = nil
 }

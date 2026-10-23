@@ -17,5 +17,5 @@ struct NoteEditor: View {
 }
 
 #Preview {
-    NoteEditor(noteViewModel: NoteViewModel(noteRepo: InMemoryNoteRepoImp()))
+    NoteEditor(noteViewModel: NoteViewModel(noteRepo: InMemoryNoteRepoImp(), noteService: PreviewNoteService()))
 }

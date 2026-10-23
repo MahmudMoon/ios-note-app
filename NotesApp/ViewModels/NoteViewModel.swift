@@ -21,7 +21,7 @@ enum LoadState {
 @Observable
 final class NoteViewModel {
     private let noteRepo: NoteRepo
-    private var noteAPi: NotesAPI
+    private var noteService: NoteService
     
     var loadState: LoadState = .idle
     
@@ -40,10 +40,10 @@ final class NoteViewModel {
         notes.count
     }
     
-    init(noteRepo: NoteRepo) {
+    init(noteRepo: NoteRepo, noteService: NoteService) {
         self.noteRepo = noteRepo
         self.notes = noteRepo.loadNotes()
-        self.noteAPi = NotesAPI()
+        self.noteService = noteService
     }
 
     /// Adds the current draft to notes and clears it. Ignores blank drafts.
@@ -70,8 +70,12 @@ final class NoteViewModel {
     func refresh(showsLoading: Bool = true) async {
         loadState = showsLoading ? .loading : .idle
         do{
-           let todos =  try await noteAPi.fetchTodos()
-            notes = todos.map { $0.toNote() }
+           let todos =  try await noteService.fetchTodos()
+            let known = Set(notes.compactMap(\.remoteID))
+            let newNotes = todos
+                .filter { !known.contains($0.id) }
+                .map { $0.toNote() }
+            notes.append(contentsOf: newNotes)
             loadState = .loaded
         }catch {
             loadState = .failed(error.localizedDescription)

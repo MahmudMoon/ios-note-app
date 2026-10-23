@@ -7,7 +7,6 @@
 
 import Foundation
 
-struct Constants {
-    static let baseURL = "https://dummyjson.com/"
-    static let endPoints = "todos"
+enum Constants {
+    static let baseURL = URL(string: "https://dummyjson.com/")!
 }

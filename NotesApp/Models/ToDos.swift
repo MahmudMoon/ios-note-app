@@ -19,6 +19,6 @@ struct ToDo: Decodable {
 
 extension ToDo {
     func toNote() -> Note {
-        Note(content: todo)
+        Note(content: todo, remoteID: id)
     }
 }
