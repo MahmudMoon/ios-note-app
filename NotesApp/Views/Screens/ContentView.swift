@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @Bindable var noteViewModel: NoteViewModel
     @State private var showSettings: Bool = false
-    @Binding var isLoggedIn: Bool
+    let logout: () -> Void
     
     var body: some View {
         NavigationStack {
@@ -35,7 +35,7 @@ struct ContentView: View {
                     ProgressView("Loading notes…")
                         .tint(.cyan)
                 case .failed(let error):
-                    ErrorView(error: error) {
+                    ErrorView(error: error, errorTitle: "Failed Note Loading") {
                         Task { await noteViewModel.refresh() }
                     }
                 case .idle, .loaded:
@@ -55,7 +55,7 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showSettings){
-                SettingScreen(showNoteCount: $noteViewModel.showNoteCount, isLoggedIn: $isLoggedIn)
+                SettingScreen(showNoteCount: $noteViewModel.showNoteCount, logout: logout)
             }
             .padding(.all, 10)
             .task {
@@ -72,13 +72,12 @@ struct ContentView: View {
         noteViewModel: NoteViewModel(
             noteRepoLocal: InMemoryNoteRepoImp(), noteReportRemote: NoteFetchRepoImpl(noteService: NotesAPI())
         ),
-        isLoggedIn: .constant(true)
+        logout: {}
     )
 }
 
 #Preview {
-    @Previewable @State var isLoggedIn: Bool = true
     ContentView(noteViewModel: NoteViewModel(noteRepoLocal: InMemoryNoteRepoImp(notes: [
         Note(content: "Milkl"), Note(content: "Call Rahim")
-    ]), noteReportRemote: NoteFetchRepoImpl(noteService: NotesAPI())),isLoggedIn: $isLoggedIn)
+    ]), noteReportRemote: NoteFetchRepoImpl(noteService: NotesAPI())), logout: {})
 }

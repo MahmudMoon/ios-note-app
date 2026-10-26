@@ -9,11 +9,12 @@ import SwiftUI
 
 struct ErrorView: View {
     let error: String
+    var errorTitle: String = ""
     let onRetry: () -> Void
 
     var body: some View {
         VStack(spacing: 8) {
-            Label("Couldn't load notes", systemImage: "exclamationmark.triangle.fill")
+            Label(errorTitle, systemImage: "exclamationmark.triangle.fill")
                 .font(.headline)
                 .foregroundStyle(.red)
             Text(error)

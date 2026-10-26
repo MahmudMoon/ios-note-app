@@ -15,20 +15,32 @@ final class LoginViewModel {
     
     var isLoggedIn = false
     
+    var loginFailed: Bool = false
+    var failedMessage: String = "Invalid username or password"
+    
+    private(set) var token: AuthRes? = nil
+    
     init(authRepo: AuthRepository) {
         self.authRepo = authRepo
     }
     
     func login(userName: String, password: String) async {
-       let authResult = await authRepo.login(username: userName, password: password)
-       if let authResult = authResult {
-            // user logged in
-           isLoggedIn = true
-           print(authResult)
-       }else {
-           // failed to login
-          isLoggedIn = false
-       }
+        do{
+            let authResult = try await authRepo.login(username: userName, password: password)
+            isLoggedIn = true
+            token = authResult
+            print(authResult)
+        }catch {
+            isLoggedIn = false
+            loginFailed = true
+            failedMessage = error.localizedDescription
+            print(error)
+        }
+    }
+    
+    func logout(){
+        isLoggedIn = false
+        token = nil
     }
     
 }

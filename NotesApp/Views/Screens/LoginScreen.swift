@@ -26,8 +26,6 @@ struct LoginScreen: View {
                 .textContentType(.password)
             Button {
                 Task {
-                    print(userName)
-                    print(password)
                     await loginViewModel.login(userName: userName, password: password)
                 }
             } label: {
@@ -36,6 +34,13 @@ struct LoginScreen: View {
             .padding(16)
             .buttonStyle(NoteButtonStyle(isFilled: true))
             .disabled(userName.count < 4 || password.count < 6)
+            
+            if loginViewModel.loginFailed == true { ErrorView(error: loginViewModel.failedMessage, errorTitle: "Failed login") {
+                    Task{
+                        await loginViewModel.login(userName: userName, password: password)
+                    }
+                }
+            }
         }
     }
 }

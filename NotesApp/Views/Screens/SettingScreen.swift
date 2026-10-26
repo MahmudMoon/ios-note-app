@@ -10,14 +10,15 @@ import SwiftUI
 struct SettingScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var showNoteCount: Bool
-    @Binding var isLoggedIn: Bool
+    let logout: () -> Void
     
     var body: some View {
         NavigationStack {
             Form {
                 Toggle("Display count", isOn: $showNoteCount)
                 Button("Logout", role: .destructive){
-                    isLoggedIn = false
+                    dismiss()
+                    logout()
                 }
             }
             .navigationTitle(Text("Setting"))
@@ -36,6 +37,5 @@ struct SettingScreen: View {
 
 #Preview {
     @Previewable @State var showNoteCount: Bool = true
-    @Previewable @State var isLoggedIn: Bool = true
-    SettingScreen(showNoteCount: $showNoteCount, isLoggedIn: $isLoggedIn)
+    SettingScreen(showNoteCount: $showNoteCount, logout: {})
 }

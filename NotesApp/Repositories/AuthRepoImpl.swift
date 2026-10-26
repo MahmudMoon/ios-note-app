@@ -14,12 +14,12 @@ final class AuthRepoImpl: AuthRepository {
         self.authService = authService
     }
     
-    func login(username: String, password: String) async -> AuthRes? {
+    func login(username: String, password: String) async throws -> AuthRes {
         do{
             return try await authService.login(username: username, password: password)
         }catch {
             print(error)
+            throw error
         }
-        return nil
     }
 }

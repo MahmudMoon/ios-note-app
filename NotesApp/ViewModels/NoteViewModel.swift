@@ -94,13 +94,18 @@ final class NoteViewModel {
     /// list's own refresh indicator isn't doubled up with the progress view.
     func refresh(showsLoading: Bool = true) async {
         loadState = showsLoading ? .loading : .idle
+        reset()
+        
+        if let local = try? await noteRepoLocal.loadNotes() {
+            local.forEach { notes.append($0) }
+        }
+        
+        
         do{
             let remoteNote =  try await noteRepoRemote.loadNotes()
-            let localNote = try await noteRepoLocal.loadNotes()
-            
-            print("local notes: ")
-            print(localNote)
-            notes = localNote + remoteNote
+            remoteNote.forEach{
+                notes.append($0)
+            }
             loadState = .loaded
         }catch {
             loadState = .failed(error.localizedDescription)

@@ -33,12 +33,12 @@ struct AuthApi: AuthService {
         print(response)
         print(data)
         
-        guard let responseStatus = response as? HTTPURLResponse, (200...300).contains(responseStatus.statusCode) else {
+        guard let responseStatus = response as? HTTPURLResponse, (200..<300).contains(responseStatus.statusCode) else {
             throw AuthError.invalidCredentials
         }
         
-        let authRes = try? JSONDecoder().decode(AuthRes.self, from: data)
+        let authRes = try JSONDecoder().decode(AuthRes.self, from: data)
          
-        return authRes ?? AuthRes(accessToken: "", refreshToken: "")
+        return authRes
     }
 }
