@@ -18,7 +18,6 @@ final class AuthRepoImpl: AuthRepository {
         do{
             return try await authService.login(username: username, password: password)
         }catch {
-            print(error)
             throw error
         }
     }

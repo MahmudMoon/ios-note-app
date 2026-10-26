@@ -7,8 +7,24 @@
 
 import Foundation
 
-enum AuthError: Error {
-    case invalidCredentials
+enum AuthError: LocalizedError {
+    case invalidCredentials(String)
+    case serverError
+    case invalidResponse
+    case unknown(statusCode: Int)
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidCredentials(let message):
+            return message
+        case .serverError:
+            return "Server is unavailable. Please try again later."
+        case .invalidResponse:
+            return "Received an unexpected response from the server."
+        case .unknown(let statusCode):
+            return "Something went wrong (\(statusCode)). Please try again."
+        }
+    }
 }
 
 protocol AuthService {
@@ -24,21 +40,29 @@ struct AuthApi: AuthService {
         let loginData = AuthReq(username: username, password: password)
         
         loginRequest.httpMethod = "POST"
-        loginRequest.setValue("application/json", forHTTPHeaderField: "content-Type")
+        loginRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         loginRequest.httpBody = try JSONEncoder().encode(loginData)
         
         let (data, response) = try await URLSession.shared.data(for: loginRequest)
         
-        print(response)
-        print(data)
-        
-        guard let responseStatus = response as? HTTPURLResponse, (200..<300).contains(responseStatus.statusCode) else {
-            throw AuthError.invalidCredentials
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw AuthError.invalidResponse
         }
         
-        let authRes = try JSONDecoder().decode(AuthRes.self, from: data)
-         
-        return authRes
+        switch httpResponse.statusCode {
+        case 200..<300:
+            guard let authRes = try? JSONDecoder().decode(AuthRes.self, from: data) else {
+                throw AuthError.invalidResponse
+            }
+            return authRes
+        case 400, 401:
+            let message = (try? JSONDecoder().decode(APIError.self, from: data))?.message
+            throw AuthError.invalidCredentials(message ?? "Invalid username or password")
+        case 500..<600:
+            throw AuthError.serverError
+        default:
+            throw AuthError.unknown(statusCode: httpResponse.statusCode)
+        }
     }
 }

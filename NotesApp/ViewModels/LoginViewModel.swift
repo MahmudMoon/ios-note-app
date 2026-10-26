@@ -13,7 +13,9 @@ final class LoginViewModel {
     
     private var authRepo: AuthRepository
     
-    var isLoggedIn = false
+    var isLoggedIn: Bool {
+        token != nil
+    }
     
     var loginFailed: Bool = false
     var failedMessage: String = "Invalid username or password"
@@ -27,11 +29,8 @@ final class LoginViewModel {
     func login(userName: String, password: String) async {
         do{
             let authResult = try await authRepo.login(username: userName, password: password)
-            isLoggedIn = true
             token = authResult
-            print(authResult)
         }catch {
-            isLoggedIn = false
             loginFailed = true
             failedMessage = error.localizedDescription
             print(error)
@@ -39,7 +38,6 @@ final class LoginViewModel {
     }
     
     func logout(){
-        isLoggedIn = false
         token = nil
     }
     
